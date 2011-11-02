@@ -44,12 +44,12 @@
         <dependency>
             <groupId>org.jboss.logging</groupId>
             <artifactId>jboss-logging</artifactId>
-            <version>3.0.0.GA</version>
+            <version>3.1.0.Beta3</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.xnio</groupId>
             <artifactId>xnio-api</artifactId>
-            <version>3.0.0.Beta3</version>
+            <version>3.0.0.Beta9</version>
         </dependency>
     </dependencies>
     <build>

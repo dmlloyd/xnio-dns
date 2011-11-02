@@ -398,7 +398,7 @@ final class IPParserImpl {
                 throw notValid();
             }
         } catch (AddressParseException e) {
-            final AddressParseException ne = new AddressParseException("Invalid " + kind + " addres string");
+            final AddressParseException ne = new AddressParseException("Invalid " + kind + " address string");
             ne.setStackTrace(e.getStackTrace());
             ne.setAddress(str);
             throw ne;
