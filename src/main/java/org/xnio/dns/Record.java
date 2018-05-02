@@ -1,26 +1,33 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2011, JBoss Inc., and individual contributors as indicated
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
  *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * Copyright 2014 Red Hat, Inc. and/or its affiliates.
  *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.xnio.dns;
+
+import static org.xnio.dns.RRType.A;
+import static org.xnio.dns.RRType.AAAA;
+import static org.xnio.dns.RRType.CNAME;
+import static org.xnio.dns.RRType.HINFO;
+import static org.xnio.dns.RRType.MX;
+import static org.xnio.dns.RRType.NS;
+import static org.xnio.dns.RRType.PTR;
+import static org.xnio.dns.RRType.SOA;
+import static org.xnio.dns.RRType.TXT;
+import static org.xnio.dns.RRType.WKS;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
@@ -45,8 +52,8 @@ public abstract class Record implements Serializable {
     private static final long serialVersionUID = 132819048908309214L;
 
     private final Domain name;
-    private final RRClass rrClass;
-    private final RRType rrType;
+    private final int rrClass;
+    private final int rrType;
     private final TTLSpec ttlSpec;
 
     /**
@@ -57,7 +64,7 @@ public abstract class Record implements Serializable {
      * @param rrType the record type
      * @param ttlSpec the TTL of this record
      */
-    protected Record(final Domain name, final RRClass rrClass, final RRType rrType, final TTLSpec ttlSpec) {
+    protected Record(final Domain name, final int rrClass, final int rrType, final TTLSpec ttlSpec) {
         this.name = name;
         this.rrType = rrType;
         this.rrClass = rrClass;
@@ -78,7 +85,7 @@ public abstract class Record implements Serializable {
      *
      * @return the resource record class
      */
-    public RRClass getRrClass() {
+    public int getRrClass() {
         return rrClass;
     }
 
@@ -87,7 +94,7 @@ public abstract class Record implements Serializable {
      *
      * @return the resource record type
      */
-    public RRType getRrType() {
+    public int getRrType() {
         return rrType;
     }
 
@@ -99,6 +106,14 @@ public abstract class Record implements Serializable {
     public TTLSpec getTtlSpec() {
         return ttlSpec;
     }
+
+    /**
+     * Get a clone of this record with the given TTL specification.
+     *
+     * @param ttlSpec the TTL specification (must not be {@code null})
+     * @return the cloned record (not {@code null})
+     */
+    public abstract Record withTTLSpec(TTLSpec ttlSpec);
 
     /**
      * Append any record-specific RR data to the string builder.
@@ -114,7 +129,7 @@ public abstract class Record implements Serializable {
      */
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append(name).append(' ').append(getTtlSpec().getTtl()).append(' ').append(rrClass).append(' ').append(rrType);
+        builder.append(name).append(' ').append(getTtlSpec().getTtl()).append(' ').append(RRClass.toString(rrClass)).append(' ').append(RRType.toString(rrType));
         appendRData(builder);
         return builder.toString();
     }
@@ -125,11 +140,11 @@ public abstract class Record implements Serializable {
      * @param buffer the source buffer
      * @return the resource record
      */
-    public static Record fromBytes(final ByteBuffer buffer) {
+    public static Record fromBytes(final ByteBuffer buffer, final long queryTimeStamp) {
         final Domain name = Domain.fromBytes(buffer);
-        final RRType rrType = RRType.fromInt(buffer.getShort() & 0xffff);
-        final RRClass rrClass = RRClass.fromInt(buffer.getShort() & 0xffff);
-        final TTLSpec ttlSpec = TTLSpec.createFixed(buffer.getInt());
+        final int rrType = buffer.getShort() & 0xffff;
+        final int rrClass = buffer.getShort() & 0xffff;
+        final TTLSpec ttlSpec = TTLSpec.createVariable(queryTimeStamp + (buffer.getInt() & 0xffff_ffffL));
         final ByteBuffer recordBuffer = Buffers.slice(buffer, buffer.getShort() & 0xffff);
         switch (rrType) {
             case AAAA:  return new AaaaRecord (name, rrClass, ttlSpec, recordBuffer);

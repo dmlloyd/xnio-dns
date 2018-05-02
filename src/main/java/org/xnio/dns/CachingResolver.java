@@ -1,30 +1,27 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2011, JBoss Inc., and individual contributors as indicated
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
  *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * Copyright 2014 Red Hat, Inc. and/or its affiliates.
  *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.xnio.dns;
 
+import org.xnio.Bits;
 import org.xnio.IoFuture;
 import org.xnio.FutureResult;
-import java.util.Set;
+
 import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.concurrent.Executor;
@@ -32,23 +29,23 @@ import java.io.IOException;
 
 public final class CachingResolver extends AbstractResolver implements Resolver {
 
-    private final Map<QueryKey, FutureResult<Answer>> cache;
+    private final Map<RecordIdentifier, FutureResult<Answer>> cache;
     private final Resolver realResolver;
     private final Executor executor;
 
     public CachingResolver(final Resolver resolver, final Executor executor, final int cacheSize) {
-        cache = new CacheMap<QueryKey, FutureResult<Answer>>(cacheSize);
+        cache = new CacheMap<RecordIdentifier, FutureResult<Answer>>(cacheSize);
         realResolver = resolver;
         this.executor = executor;
     }
 
     /** {@inheritDoc} */
-    public IoFuture<Answer> resolve(final Domain name, final RRClass rrClass, final RRType rrType, final Set<ResolverFlag> flags) {
-        if (flags.contains(ResolverFlag.BYPASS_CACHE)) {
+    public IoFuture<Answer> resolve(final Domain name, final int rrClass, final int rrType, final int flags) {
+        if (Bits.allAreSet(flags, Query.Flag.BYPASS_CACHE)) {
             // skip the cache, do not record results
             return realResolver.resolve(name, rrClass, rrType, flags);
         } else {
-            final QueryKey key = new QueryKey(name, rrClass, rrType);
+            final RecordIdentifier key = new RecordIdentifier(name, rrClass, rrType);
             final FutureResult<Answer> newAnswer;
             synchronized (cache) {
                 final FutureResult<Answer> future = cache.get(key);

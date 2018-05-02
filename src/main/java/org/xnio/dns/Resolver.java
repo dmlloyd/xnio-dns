@@ -1,38 +1,41 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2011, JBoss Inc., and individual contributors as indicated
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
  *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * Copyright 2014 Red Hat, Inc. and/or its affiliates.
  *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.xnio.dns;
 
-import org.xnio.IoFuture;
-import java.util.Set;
-import java.util.List;
-import java.net.InetAddress;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.util.List;
+
+import org.xnio.IoFuture;
 
 /**
  * A DNS resolver.
  */
 public interface Resolver {
+    /**
+     * Execute a DNS query.
+     *
+     * @param query the DNS query (must not be {@code null})
+     * @return the future answer (must not be {@code null})
+     */
+    IoFuture<Answer> resolve(Query query);
 
     /**
      * Execute a DNS query.
@@ -40,10 +43,12 @@ public interface Resolver {
      * @param name the domain name
      * @param rrClass the resource record class
      * @param rrType the resource record type
-     * @param flags the query flags
+     * @param queryFlags the query flags
      * @return the future answer
      */
-    IoFuture<Answer> resolve(Domain name, RRClass rrClass, RRType rrType, Set<ResolverFlag> flags);
+    default IoFuture<Answer> resolve(Domain name, int rrClass, int rrType, int queryFlags) {
+        return resolve(new Query(name, rrClass, rrType, queryFlags));
+    }
 
     /**
      * Execute a DNS query.
@@ -53,7 +58,9 @@ public interface Resolver {
      * @param rrType the resource record type
      * @return the future answer
      */
-    IoFuture<Answer> resolve(Domain name, RRClass rrClass, RRType rrType);
+    default IoFuture<Answer> resolve(Domain name, int rrClass, int rrType) {
+        return resolve(new Query(name, rrClass, rrType, 0));
+    }
 
     /**
      * Execute a DNS query.  A resource record class of {@link org.xnio.dns.RRClass#IN} is assumed.
@@ -62,7 +69,9 @@ public interface Resolver {
      * @param rrType the resource record type
      * @return the future answer
      */
-    IoFuture<Answer> resolve(Domain name, RRType rrType);
+    default IoFuture<Answer> resolve(Domain name, int rrType) {
+        return resolve(new Query(name, RRClass.IN, rrType, 0));
+    }
 
     /**
      * Get all the IP addresses (IPv4 or IPv6) for the given domain name.

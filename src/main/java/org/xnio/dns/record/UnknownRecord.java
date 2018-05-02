@@ -1,23 +1,19 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2011, JBoss Inc., and individual contributors as indicated
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
  *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * Copyright 2014 Red Hat, Inc. and/or its affiliates.
  *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.xnio.dns.record;
@@ -25,7 +21,6 @@ package org.xnio.dns.record;
 import org.xnio.dns.Record;
 import org.xnio.dns.Domain;
 import org.xnio.dns.RRClass;
-import org.xnio.dns.RRType;
 import org.xnio.dns.TTLSpec;
 import org.xnio.Buffers;
 import java.nio.ByteBuffer;
@@ -48,7 +43,7 @@ public class UnknownRecord extends Record {
      * @param ttlSpec the TTL spec
      * @param data the raw data
      */
-    public UnknownRecord(final Domain name, final RRClass rrClass, final RRType rrType, final TTLSpec ttlSpec, final byte[] data) {
+    public UnknownRecord(final Domain name, final int rrClass, final int rrType, final TTLSpec ttlSpec, final byte[] data) {
         super(name, rrClass, rrType, ttlSpec);
         this.data = data;
     }
@@ -61,7 +56,7 @@ public class UnknownRecord extends Record {
      * @param ttlSpec the TTL spec
      * @param data the raw data
      */
-    public UnknownRecord(final Domain name, final RRType rrType, final TTLSpec ttlSpec, final byte[] data) {
+    public UnknownRecord(final Domain name, final int rrType, final TTLSpec ttlSpec, final byte[] data) {
         this(name, RRClass.IN, rrType, ttlSpec, data);
     }
 
@@ -72,7 +67,7 @@ public class UnknownRecord extends Record {
      * @param rrType the record type
      * @param data the raw data
      */
-    public UnknownRecord(final Domain name, final RRType rrType, final byte[] data) {
+    public UnknownRecord(final Domain name, final int rrType, final byte[] data) {
         this(name, rrType, TTLSpec.ZERO, data);
     }
 
@@ -85,7 +80,7 @@ public class UnknownRecord extends Record {
      * @param ttlSpec the TTL spec
      * @param recordBuffer the buffer from which this record's RDATA should be built
      */
-    public UnknownRecord(final Domain name, final RRClass rrClass, final RRType rrType, final TTLSpec ttlSpec, final ByteBuffer recordBuffer) {
+    public UnknownRecord(final Domain name, final int rrClass, final int rrType, final TTLSpec ttlSpec, final ByteBuffer recordBuffer) {
         super(name, rrClass, rrType, ttlSpec);
         data = Buffers.take(recordBuffer, recordBuffer.remaining());
     }

@@ -1,23 +1,19 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2011, JBoss Inc., and individual contributors as indicated
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
  *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * Copyright 2014 Red Hat, Inc. and/or its affiliates.
  *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.xnio.dns;
@@ -25,223 +21,289 @@ package org.xnio.dns;
 /**
  *
  */
-public enum RRType {
-    UNKNOWN(-1),
+public final class RRType {
+    private RRType() {}
+
+    public static final int UNKNOWN = -1;
     
     /** {@rfc 1035} */
-    A(1),
+    public static final int A = 1;
     /** {@rfc 1035} */
-    NS(2),
+    public static final int NS = 2;
     /**
      * @deprecated use {@link #MX}
      */
     @Deprecated
-    MD(3),
+    public static final int MD = 3;
     /**
      * @deprecated use {@link #MX}
      */
     @Deprecated
-    MF(4),
+    public static final int MF = 4;
     /** {@rfc 1035} */
-    CNAME(5),
+    public static final int CNAME = 5;
     /** {@rfc 1035} */
-    SOA(6),
+    public static final int SOA = 6;
     /** {@rfc 1035} */
-    MB(7),
+    public static final int MB = 7;
     /** {@rfc 1035} */
-    MG(8),
+    public static final int MG = 8;
     /** {@rfc 1035} */
-    MR(9),
+    public static final int MR = 9;
     /** {@rfc 1035} */
-    NULL(10),
+    public static final int NULL = 10;
     /** {@rfc 1035} */
-    WKS(11),
+    public static final int WKS = 11;
     /** {@rfc 1035} */
-    PTR(12),
+    public static final int PTR = 12;
     /** {@rfc 1035} */
-    HINFO(13),
+    public static final int HINFO = 13;
     /** {@rfc 1035} */
-    MINFO(14),
+    public static final int MINFO = 14;
     /** {@rfc 1035} */
-    MX(15),
+    public static final int MX = 15;
     /** {@rfc 1035} */
-    TXT(16),
+    public static final int TXT = 16;
     /** {@rfc 1183} */
-    RP(17),
+    public static final int RP = 17;
     /** {@rfc 1183} */
-    AFSDB(18),
+    public static final int AFSDB = 18;
     /** {@rfc 1183} */
-    X25(19),
+    public static final int X25 = 19;
     /** {@rfc 1183} */
-    ISDN(20),
+    public static final int ISDN = 20;
     /** {@rfc 1183} */
-    RT(21),
+    public static final int RT = 21;
     /** {@rfc 1706} */
-    NSAP(22),
+    public static final int NSAP = 22;
     /** {@rfc 1348} */
-    NSAP_PTR(23),
+    public static final int NSAP_PTR = 23;
     /** {@rfc 4034}, {@rfc 3755}, {@rfc 2535} */
-    SIG(24),
+    public static final int SIG = 24;
     /** {@rfc 4034}, {@rfc 3755}, {@rfc 2535} */
-    KEY(25),
+    public static final int KEY = 25;
     /** {@rfc 2163} */
-    PX(26),
+    public static final int PX = 26;
     /** {@rfc 1712} */
-    GPOS(27),
+    public static final int GPOS = 27;
     /** {@rfc 3596} */
-    AAAA(28),
+    public static final int AAAA = 28;
     /** {@rfc 1876} */
-    LOC(29),
+    public static final int LOC = 29;
     @Deprecated
-    NXT(30),
-    EID(31),
-    NIMLOC(32),
+    public static final int NXT = 30;
+    public static final int EID = 31;
+    public static final int NIMLOC = 32;
     /** {@rfc 2782} */
-    SRV(33),
-    ATMA(34),
+    public static final int SRV = 33;
+    public static final int ATMA = 34;
     /** {@rfc 2915} {@rfc 2168} */
-    NAPTR(35),
+    public static final int NAPTR = 35;
     /** {@rfc 2230} */
-    KX(36),
+    public static final int KX = 36;
     /** {@rfc 2538} */
-    CERT(37),
+    public static final int CERT = 37;
     /** {@rfc 3226} {@rfc 2874} */
-    A6(38),
+    public static final int A6 = 38;
     /** {@rfc 2672} */
-    DNAME(39),
-    SINK(40),
+    public static final int DNAME = 39;
+    public static final int SINK = 40;
     /** {@rfc 2671} */
-    OPT(41),
+    public static final int OPT = 41;
     /** {@rfc 3123} */
-    APL(42),
+    public static final int APL = 42;
     /** {@rfc 3658} */
-    DS(43),
+    public static final int DS = 43;
     /** {@rfc 4255} */
-    SSHFP(44),
+    public static final int SSHFP = 44;
     /** {@rfc 4025} */
-    IPSECKEY(45),
+    public static final int IPSECKEY = 45;
     /** {@rfc 4034} {@rfc 3755} */
-    RRSIG(46),
+    public static final int RRSIG = 46;
     /** {@rfc 4034} {@rfc 3755} */
-    NSEC(47),
+    public static final int NSEC = 47;
     /** {@rfc 4034} {@rfc 3755} */
-    DNSKEY(48),
+    public static final int DNSKEY = 48;
     /** {@rfc 4701} */
-    DHCID(49),
+    public static final int DHCID = 49;
     /** {@rfc 5155} */
-    NSEC3(50),
+    public static final int NSEC3 = 50;
     /** {@rfc 5155} */
-    NSEC3PARAM(51),
+    public static final int NSEC3PARAM = 51;
     /** {@rfc 5205} */
-    HIP(55),
-    NINFO(56),
-    RKEY(57),
+    public static final int HIP = 55;
+    public static final int NINFO = 56;
+    public static final int RKEY = 57;
     /** {@rfc 4408} */
-    SPF(99),
-    UINFO(100),
-    UID(101),
-    GID(102),
-    UNSPEC(103),
+    public static final int SPF = 99;
+    public static final int UINFO = 100;
+    public static final int UID = 101;
+    public static final int GID = 102;
+    public static final int UNSPEC = 103;
     /** {@rfc 2930} */
-    TKEY(249),
+    public static final int TKEY = 249;
     /** {@rfc 2845} */
-    TSIG(250),
+    public static final int TSIG = 250;
     /** {@rfc 1995} */
-    IXFR(251),
+    public static final int IXFR = 251;
     /** {@rfc 1035} */
-    AXFR(252),
+    public static final int AXFR = 252;
     /** {@rfc 1035} */
-    MAILB(253),
+    public static final int MAILB = 253;
     /**
      * @deprecated use {@link #MX}
      */
     @Deprecated
-    MAILA(254),
+    public static final int MAILA = 254;
     /** {@rfc 1035} */
-    ANY(255),
-    TA(32768),
-    DLV(32769);
-    private final int id;
+    public static final int ANY = 255;
+    public static final int TA = 32768;
+    public static final int DLV = 32769;
 
-    RRType(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    @SuppressWarnings({ "deprecation" })
-    public static RRType fromInt(final int i) {
+    public static String toString(final int i) {
         switch (i) {
-            case 1: return A;
-            case 2: return NS;
-            case 3: return MD;
-            case 4: return MF;
-            case 5: return CNAME;
-            case 6: return SOA;
-            case 7: return MB;
-            case 8: return MG;
-            case 9: return MR;
-            case 10: return NULL;
-            case 11: return WKS;
-            case 12: return PTR;
-            case 13: return HINFO;
-            case 14: return MINFO;
-            case 15: return MX;
-            case 16: return TXT;
-            case 17: return RP;
-            case 18: return AFSDB;
-            case 19: return X25;
-            case 20: return ISDN;
-            case 21: return RT;
-            case 22: return NSAP;
-            case 23: return NSAP_PTR;
-            case 24: return SIG;
-            case 25: return KEY;
-            case 26: return PX;
-            case 27: return GPOS;
-            case 28: return AAAA;
-            case 29: return LOC;
-            case 30: return NXT;
-            case 31: return EID;
-            case 32: return NIMLOC;
-            case 33: return SRV;
-            case 34: return ATMA;
-            case 35: return NAPTR;
-            case 36: return KX;
-            case 37: return CERT;
-            case 38: return A6;
-            case 39: return DNAME;
-            case 40: return SINK;
-            case 41: return OPT;
-            case 42: return APL;
-            case 43: return DS;
-            case 44: return SSHFP;
-            case 45: return IPSECKEY;
-            case 46: return RRSIG;
-            case 47: return NSEC;
-            case 48: return DNSKEY;
-            case 49: return DHCID;
-            case 50: return NSEC3;
-            case 51: return NSEC3PARAM;
-            case 55: return HIP;
-            case 56: return NINFO;
-            case 57: return RKEY;
-            case 99: return SPF;
-            case 100: return UINFO;
-            case 101: return UID;
-            case 102: return GID;
-            case 103: return UNSPEC;
-            case 249: return TKEY;
-            case 250: return TSIG;
-            case 251: return IXFR;
-            case 252: return AXFR;
-            case 253: return MAILB;
-            case 254: return MAILA;
-            case 255: return ANY;
-            case 32768: return TA;
-            case 32769: return DLV;
+            case A: return "A";
+            case NS: return "NS";
+            case MD: return "MD";
+            case MF: return "MF";
+            case CNAME: return "CNAME";
+            case SOA: return "SOA";
+            case MB: return "MB";
+            case MG: return "MG";
+            case MR: return "MR";
+            case NULL: return "NULL";
+            case WKS: return "WKS";
+            case PTR: return "PTR";
+            case HINFO: return "HINFO";
+            case MINFO: return "MINFO";
+            case MX: return "MX";
+            case TXT: return "TXT";
+            case RP: return "RP";
+            case AFSDB: return "AFSDB";
+            case X25: return "X25";
+            case ISDN: return "ISDN";
+            case RT: return "RT";
+            case NSAP: return "NSAP";
+            case NSAP_PTR: return "NSAP_PTR";
+            case SIG: return "SIG";
+            case KEY: return "KEY";
+            case PX: return "PX";
+            case GPOS: return "GPOS";
+            case AAAA: return "AAAA";
+            case LOC: return "LOC";
+            case NXT: return "NXT";
+            case EID: return "EID";
+            case NIMLOC: return "NIMLOC";
+            case SRV: return "SRV";
+            case ATMA: return "ATMA";
+            case NAPTR: return "NAPTR";
+            case KX: return "KX";
+            case CERT: return "CERT";
+            case A6: return "A6";
+            case DNAME: return "DNAME";
+            case SINK: return "SINK";
+            case OPT: return "OPT";
+            case APL: return "APL";
+            case DS: return "DS";
+            case SSHFP: return "SSHFP";
+            case IPSECKEY: return "IPSECKEY";
+            case RRSIG: return "RRSIG";
+            case NSEC: return "NSEC";
+            case DNSKEY: return "DNSKEY";
+            case DHCID: return "DHCID";
+            case NSEC3: return "NSEC3";
+            case NSEC3PARAM: return "NSEC3PARAM";
+            case HIP: return "HIP";
+            case NINFO: return "NINFO";
+            case RKEY: return "RKEY";
+            case SPF: return "SPF";
+            case UINFO: return "UINFO";
+            case UID: return "UID";
+            case GID: return "GID";
+            case UNSPEC: return "UNSPEC";
+            case TKEY: return "TKEY";
+            case TSIG: return "TSIG";
+            case IXFR: return "IXFR";
+            case AXFR: return "AXFR";
+            case MAILB: return "MAILB";
+            case MAILA: return "MAILA";
+            case ANY: return "ANY";
+            case TA: return "TA";
+            case DLV: return "DLV";
+            default: return "UNKNOWN";
+        }
+    }
+
+    public static int fromString(String rrTypeName) {
+        switch (rrTypeName) {
+            case "A": return A;
+            case "NS": return NS;
+            case "MD": return MD;
+            case "MF": return MF;
+            case "CNAME": return CNAME;
+            case "SOA": return SOA;
+            case "MB": return MB;
+            case "MG": return MG;
+            case "MR": return MR;
+            case "NULL": return NULL;
+            case "WKS": return WKS;
+            case "PTR": return PTR;
+            case "HINFO": return HINFO;
+            case "MINFO": return MINFO;
+            case "MX": return MX;
+            case "TXT": return TXT;
+            case "RP": return RP;
+            case "AFSDB": return AFSDB;
+            case "X25": return X25;
+            case "ISDN": return ISDN;
+            case "RT": return RT;
+            case "NSAP": return NSAP;
+            case "NSAP_PTR": return NSAP_PTR;
+            case "SIG": return SIG;
+            case "KEY": return KEY;
+            case "PX": return PX;
+            case "GPOS": return GPOS;
+            case "AAAA": return AAAA;
+            case "LOC": return LOC;
+            case "NXT": return NXT;
+            case "EID": return EID;
+            case "NIMLOC": return NIMLOC;
+            case "SRV": return SRV;
+            case "ATMA": return ATMA;
+            case "NAPTR": return NAPTR;
+            case "KX": return KX;
+            case "CERT": return CERT;
+            case "A6": return A6;
+            case "DNAME": return DNAME;
+            case "SINK": return SINK;
+            case "OPT": return OPT;
+            case "APL": return APL;
+            case "DS": return DS;
+            case "SSHFP": return SSHFP;
+            case "IPSECKEY": return IPSECKEY;
+            case "RRSIG": return RRSIG;
+            case "NSEC": return NSEC;
+            case "DNSKEY": return DNSKEY;
+            case "DHCID": return DHCID;
+            case "NSEC3": return NSEC3;
+            case "NSEC3PARAM": return NSEC3PARAM;
+            case "HIP": return HIP;
+            case "NINFO": return NINFO;
+            case "RKEY": return RKEY;
+            case "SPF": return SPF;
+            case "UINFO": return UINFO;
+            case "UID": return UID;
+            case "GID": return GID;
+            case "UNSPEC": return UNSPEC;
+            case "TKEY": return TKEY;
+            case "TSIG": return TSIG;
+            case "IXFR": return IXFR;
+            case "AXFR": return AXFR;
+            case "MAILB": return MAILB;
+            case "MAILA": return MAILA;
+            case "ANY": return ANY;
+            case "TA": return TA;
+            case "DLV": return DLV;
             default: return UNKNOWN;
         }
     }
